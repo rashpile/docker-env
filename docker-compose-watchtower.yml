@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKER_CONFIG_FILE}:/config.json
+    restart: always
+    command: --debug --http-api-update
+    environment:
+        - WATCHTOWER_LABEL_ENABLE=true
+        # - WATCHTOWER_POLL_INTERVAL=30
+        - WATCHTOWER_HTTP_API=true
+        - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_HTTP_API_TOKEN}
+        - VIRTUAL_HOST=watchtower.rashpile.com
+        - VIRTUAL_PORT=8080
+        - LETSENCRYPT_HOST=watchtower.rashpile.com
+        - LETSENCRYPT_EMAIL=koptilin@gmail.com
+  
+networks:
+  default:
+    external:
+      name: nginx-proxy

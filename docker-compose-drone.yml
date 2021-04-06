@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  drone-server:
+    container_name: drone_server
+    image: drone/drone:1
+    # ports:
+    #   - 8080:80
+    volumes:
+      - /var/lib/drone:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - DRONE_GITHUB_SERVER=https://github.com
+      - DRONE_GITHUB_CLIENT_ID=${DRONE_GITHUB_CLIENT_ID}
+      - DRONE_GITHUB_CLIENT_SECRET=${DRONE_GITHUB_CLIENT_SECRET}
+      - DRONE_AGENTS_ENABLED=true
+      - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
+      - DRONE_SERVER_HOST=${DRONE_SERVER_HOST}
+      - DRONE_SERVER_PROTO=https
+      - DRONE_TLS_AUTOCERT=true
+      - DRONE_USER_CREATE=username:rashpile,admin:true
+      - DRONE_LOGS_TRACE=true
+      - DRONE_LOGS_PRETTY=true
+      - DRONE_LOGS_COLOR=true
+      - VIRTUAL_HOST=drone.rashpile.com
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=drone.rashpile.com
+      - LETSENCRYPT_EMAIL=koptilin@gmail.com
+
+  drone-agent:
+    container_name: drone_agent
+    image: drone/agent:1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - DRONE_RPC_HOST=drone-server
+      - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
+      - DRONE_RUNNER_CAPACITY=1
+      - DRONE_RUNNER_NAME=DRONE_RUNNER
+      - DRONE_LOGS_TRACE=true
+      - DRONE_LOGS_PRETTY=true
+      - DRONE_LOGS_COLOR=true
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
+      
