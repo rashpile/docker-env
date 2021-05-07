@@ -5,6 +5,8 @@ services:
     image: registry.rashpile.com/rashpile-api
     container_name: rashpile-api
     restart: unless-stopped
+    volumes: 
+      - ${PROP_FILE}:/app/app.properties
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:
