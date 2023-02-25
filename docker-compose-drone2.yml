@@ -1,5 +1,7 @@
 version: '3.7'
-
+#
+# drone orgsecret add rashpile watchtower_bearer_token "Bearer 12345"
+#
 services:
   drone2-server:
     container_name: drone2_server

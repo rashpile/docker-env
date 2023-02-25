@@ -91,6 +91,7 @@ map $http_upgrade $proxy_connection {
 
 # Apply fix for very long server names
 server_names_hash_bucket_size 128;
+client_max_body_size 200000M;
 
 # Default dhparam
 {{ if (exists "/etc/nginx/dhparam/dhparam.pem") }}
