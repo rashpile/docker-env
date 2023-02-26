@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  reproxy:
+    image: umputun/reproxy:master
+    container_name: reproxy
+    hostname: reproxy
+    ports:
+      - "443:8443"    
+      - "80:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./var/ssl:/srv/var/ssl
+      #- ./web:/web
+    environment:
+      - DOCKER_NETWORK=reproxy
+      - TZ=America/Chicago
+      # - LISTEN=0.0.0.0:8081
+      - DOCKER_ENABLED=true
+      #- DOCKER_AUTO=true
+      #- ASSETS_LOCATION=/web
+      - DEBUG=true
+      - SSL_TYPE=auto
+      - SSL_ACME_EMAIL=koptilin@gmail.com
+      - SSL_ACME_LOCATION=/srv/var/ssl
+      - SSL_ACME_FQDN=${SITE}.${SERVER_URL},tr.${SERVER_URL},drone2.${SERVER_URL},registry.${SERVER_URL}
+      - HEADER=
+          X-Frame-Options:SAMEORIGIN,
+          X-XSS-Protection:1; mode=block;,
+          # Content-Security-Policy:default-src 'self'; style-src 'self' 'unsafe-inline';
+networks:
+  default:
+    external:
+      name: reproxy

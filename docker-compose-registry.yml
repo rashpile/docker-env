@@ -17,15 +17,14 @@ services:
       - REGISTRY_AUTH=htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
       - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
-      # - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.rashpile.com.crt
-      # - REGISTRY_HTTP_TLS_KEY=/certs/registry.rashpile.com.key
-      - VIRTUAL_HOST=registry.${SERVER_URL}
-      - VIRTUAL_PORT=5000
-      - LETSENCRYPT_HOST=registry.${SERVER_URL}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+    labels:
+      reproxy.server: "registry.${SERVER_URL}"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 5000
 volumes:
   certs:
 networks:
   default:
     external:
-      name: nginx-proxy
+      name: reproxy
