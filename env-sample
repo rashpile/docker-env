@@ -1,0 +1,26 @@
+# echo "DOCKER_USER=$(id -u):$(id -g)" >> .env
+
+
+#global
+SERVER_URL=
+
+#main site
+SITE=me
+
+#drone
+DRONE2_GITHUB_CLIENT_ID=
+DRONE2_GITHUB_CLIENT_SECRET=
+DRONE2_RPC_SECRET=
+DRONE2_USER_FILTER=rashpile
+
+#watchtower
+REPO_USER=rashpile
+REPO_PASS=
+WATCHTOWER_HTTP_API_TOKEN=
+
+#codeserver
+CODE_SERVER_PATH=$HOME
+
+#letsencrypt
+LETSENCRYPT_EMAIL=
+

@@ -25,7 +25,7 @@ services:
       - SSL_TYPE=auto
       - SSL_ACME_EMAIL=koptilin@gmail.com
       - SSL_ACME_LOCATION=/srv/var/ssl
-      - SSL_ACME_FQDN=${SITE}.${SERVER_URL},tr.${SERVER_URL},drone2.${SERVER_URL},registry.${SERVER_URL},dualsub.${SERVER_URL}
+      - SSL_ACME_FQDN=${SITE}.${SERVER_URL},tr.${SERVER_URL},drone2.${SERVER_URL},registry.${SERVER_URL},dualsub.${SERVER_URL},code.${SERVER_URL}
       - TIMEOUT_CONTINUE=90s
       - TIMEOUT_RESP_HEADER=90s
       - TIMEOUT_READ_HEADER=90s
