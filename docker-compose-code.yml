@@ -14,7 +14,7 @@ services:
     volumes:
       - ${HOME}/.code-server-config:/home/coder/.config
       - ${CODE_SERVER_PATH}:/home/coder/project
-    command: --auth none --disable-telemetry /home/coder/project
+    command: --disable-telemetry /home/coder/project
     labels:
       reproxy.server: "code.${SERVER_URL}"
       reproxy.route: '^/(.*)'
