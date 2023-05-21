@@ -2,7 +2,8 @@ version: '3.7'
 
 services:
   reproxy:
-    image: umputun/reproxy:master
+    image: umputun/reproxy:local
+    # image: umputun/reproxy:master
     container_name: reproxy
     hostname: reproxy
     ports:
@@ -14,7 +15,8 @@ services:
       #- ./web:/web
     environment:
       - DOCKER_NETWORK=reproxy
-      - TZ=America/Chicago
+      - MAX_SIZE=0
+      - TZ=Europe/Bucharest
       # - LISTEN=0.0.0.0:8081
       - DOCKER_ENABLED=true
       #- DOCKER_AUTO=true
@@ -23,7 +25,12 @@ services:
       - SSL_TYPE=auto
       - SSL_ACME_EMAIL=koptilin@gmail.com
       - SSL_ACME_LOCATION=/srv/var/ssl
-      - SSL_ACME_FQDN=${SITE}.${SERVER_URL},tr.${SERVER_URL},drone2.${SERVER_URL},registry.${SERVER_URL}
+      - SSL_ACME_FQDN=${SITE}.${SERVER_URL},tr.${SERVER_URL},drone2.${SERVER_URL},registry.${SERVER_URL},dualsub.${SERVER_URL}
+      - TIMEOUT_CONTINUE=90s
+      - TIMEOUT_RESP_HEADER=90s
+      - TIMEOUT_READ_HEADER=90s
+      # - DROP_HEADERS=Content-Length
+
       - HEADER=
           X-Frame-Options:SAMEORIGIN,
           X-XSS-Protection:1; mode=block;,

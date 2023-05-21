@@ -8,10 +8,18 @@ services:
     container_name: rashpile-translate-api
     labels:
       com.centurylinklabs.watchtower.enable: true
-      reproxy.server: "tr.${SERVER_URL}"
-      reproxy.route: '^/(.*)'
-      reproxy.dest: '/@1'
-      reproxy.port: 8989
+      # reproxy.server: "drone.${SERVER_URL}"
+      # reproxy.route: '^/(.*)'
+      # reproxy.dest: '/@1'
+      # reproxy.port: 8989
+      reproxy.0.server: "tr.${SERVER_URL}"
+      reproxy.0.route: '^/api/(.*)'
+      reproxy.0.dest: '/@1'
+      reproxy.0.port: 8989
+      reproxy.1.server: "dualsub.${SERVER_URL}"
+      reproxy.1.route: '^/(.*)'
+      reproxy.1.dest: '/@1'
+      reproxy.1.port: 8989
     volumes:
       - /home/pkoptilin/.keys/googletranslate1:/home/nonroot/.keys/googletranslate1
       - /home/pkoptilin/.keys/deepl1:/home/nonroot/.keys/deepltranslate1
@@ -21,6 +29,16 @@ services:
     environment:
       - API_KEY=1978-0306-1234
     command: -port=8989
+
+  rashpile-translate-ui:
+    image: registry.${SERVER_URL}/translate-ui
+    container_name: rashpile-translate-ui
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+      reproxy.0.server: "tr.${SERVER_URL}"
+      reproxy.0.route: '^/(.*)'
+      reproxy.0.dest: '/@1'
+      reproxy.0.port: 8080
 networks:
   default:
     external:
