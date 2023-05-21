@@ -20,6 +20,7 @@ WATCHTOWER_HTTP_API_TOKEN=
 
 #codeserver
 CODE_SERVER_PATH=$HOME
+#CODE_SERVER_CMD=/home/coder/project
 
 #letsencrypt
 LETSENCRYPT_EMAIL=
