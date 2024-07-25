@@ -20,12 +20,19 @@ This is set of docker compose files to start sites based on containers with auto
 | Environment                | Default                  | Description                                     |
 | -------------------------- | ------------------------ | ----------------------------------------------- |
 | SERVER_URL                 |                          | url to build server, _required_                 |
+| REPROXY_URLS               |                          | reproxu URLS                                    |
 | DRONE_GITHUB_CLIENT_ID     |                          | drone github client, _required_                 |
 | DRONE_GITHUB_CLIENT_SECRET |                          | drone github secret, _required_                 |
 | DRONE_RPC_SECRET           |                          | drone rpc secret, _required_                    |
 | WATCHTOWER_HTTP_API_TOKEN  |                          | watchtower token, _required_                    |
 | DOCKER_CONFIG_FILE         |                          | <USER HOME>/.docker/config.json, _required_     |
 | LETSENCRYPT_EMAIL          |                          | email                                           |
+
+## Setup
+
+docker network create reproxy
+
+## Reproxy
 
 
 ## Nginx Proxy & Letsencrypt

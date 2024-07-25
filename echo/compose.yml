@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  keycloak:
+    container_name: echo
+    image: kicbase/echo-server:1.0
+    labels:
+      reproxy.server: "echo.${SERVER_URL}"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 8080
+networks:
+  default:
+    external:
+      name: reproxy
+

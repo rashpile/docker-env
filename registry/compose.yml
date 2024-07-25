@@ -1,0 +1,29 @@
+version: '3.7'
+# mkdir auth
+# sudo apt install apache2-utils
+# htpasswd -Bc auth/htpasswd myuser
+services:
+  registry:
+    container_name: registry
+    image: registry:2
+    volumes:
+      - registry_data:/var/lib/registry
+      - ./auth:/auth
+    # ports:
+    #   - 5000:5000
+    restart: always
+    environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+    labels:
+      reproxy.server: "registry2.${SERVER_URL}"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 5000
+volumes:
+  registry_data:
+networks:
+  default:
+    external:
+      name: reproxy

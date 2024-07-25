@@ -1,0 +1,11 @@
+
+.vscode
+.idea
+*.gpg
+.ssl
+ssl
+.env
+.data
+data
+gitea/data
+registry/auth/htpasswd

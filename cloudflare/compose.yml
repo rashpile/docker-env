@@ -1,0 +1,10 @@
+version: '3'
+services:
+  cloudflare:
+    container_name: cloudflare
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --loglevel info run --token ${CLOUDFLARE_TOKEN}
+networks:
+  default:
+    external:
+      name: reproxy

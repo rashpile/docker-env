@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:23.0.5
+    volumes:
+      - ./.data/keycloak:/opt/keycloak/data
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_PROXY: "edge"
+      KC_LOG_LEVEL: INFO
+    ports:
+      - 8080
+    labels:
+      reproxy.server: "idp.${SERVER_URL}"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 8080
+    command: start-dev
+networks:
+  default:
+    external:
+      name: reproxy
+

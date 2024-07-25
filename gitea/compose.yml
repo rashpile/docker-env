@@ -1,0 +1,30 @@
+version: "3"
+
+
+networks:
+  default:
+    external:
+      name: reproxy
+
+services:
+  server:
+    image: gitea/gitea:1.21.7
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    # ports:
+    #   - "127.0.0.1:3000:3000"
+    #   - "127.0.0.1:222:22"
+    env_file:
+      - ../.env
+    labels:
+      reproxy.server: "git.${SERVER_URL}"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 3000

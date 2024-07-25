@@ -1,0 +1,55 @@
+version: '3.7'
+#
+# drone orgsecret add rashpile watchtower_bearer_token "Bearer 12345"
+#
+services:
+  drone:
+    container_name: drone
+    image: drone/drone:2
+    # ports:
+    #   - 8080:80
+    volumes:
+      - /var/lib/drone2:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - DRONE_GITEA_SERVER=https://git.${SERVER_URL}
+      - DRONE_GITEA_CLIENT_ID=${DRONE2_GITEA_CLIENT_ID}
+      - DRONE_GITEA_CLIENT_SECRET=${DRONE2_GITEA_CLIENT_SECRET}
+      - DRONE_AGENTS_ENABLED=true
+      - DRONE_RPC_SECRET=${DRONE2_RPC_SECRET}
+      - DRONE_SERVER_HOST=dr.${SERVER_URL}
+      - DRONE_SERVER_PROTO=https
+      - DRONE_USER_FILTER=${DRONE2_USER_FILTER}
+      - DRONE_TLS_AUTOCERT=true
+      - DRONE_USER_CREATE=username:rashpile,admin:true
+      - DRONE_LOGS_TRACE=true
+      - DRONE_LOGS_PRETTY=true
+      - DRONE_LOGS_COLOR=true
+    labels:
+      reproxy.server: "dr.${SERVER_URL}"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 80
+
+
+  drone_runner:
+    container_name: drone_runner
+    image: drone/drone-runner-docker:1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - DRONE_RPC_HOST=drone
+      - DRONE_RPC_SECRET=${DRONE2_RPC_SECRET}
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RUNNER_NAME=DRONE2_RUNNER
+      - DRONE_LOGS_TRACE=true
+      - DRONE_LOGS_PRETTY=true
+      - DRONE_LOGS_COLOR=true
+
+networks:
+  default:
+    external:
+      name: reproxy
+      

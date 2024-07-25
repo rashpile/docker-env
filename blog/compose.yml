@@ -1,0 +1,15 @@
+
+services:
+  pakoblog:
+    container_name: pakoblog
+    image: registry2.rashpile.com.ua/rashpile/pako-blog
+    labels:
+      reproxy.server: "blog.rashpile.com.ua"
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 80
+networks:
+  default:
+    external: true
+    name: reproxy
+

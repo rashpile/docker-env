@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  wiremock:
+    container_name: uam
+    image: wiremock/wiremock:3.3.1
+    ports:
+      - 8090:8080
+networks:
+  default:
+    external:
+      name: reproxy

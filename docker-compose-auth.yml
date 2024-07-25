@@ -1,0 +1,11 @@
+services:
+  plugin-example:
+    image: rashpile/plugin-oauth
+    container_name: plugin-oauth
+    hostname: plugin-oauth
+    volumes:
+      - ./resources/.env:/srv/.env
+networks:
+  default:
+    external:
+      name: reproxy

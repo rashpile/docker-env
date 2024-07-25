@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  sample:
+    image: golang
+    container_name: sample
+    volumes:
+      - ../../go/hello:/app
+    ports:
+      - "127.0.0.1:45001:8080"
+    command: go run /app/main.go
+    labels:
+      reproxy.server: sample.rashpile.com.ua
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 8080
+  echo:
+    image: kicbase/echo-server:1.0
+    container_name: echo
+    ports:
+      - "127.0.0.1:45002:8080"
+    labels:
+      reproxy.server: dragonstone.rashpile.com.ua
+      reproxy.route: '^/(.*)'
+      reproxy.dest: '/@1'
+      reproxy.port: 8080
+
+networks:
+  default:
+    external:
+      name: reproxy

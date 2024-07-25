@@ -1,18 +1,48 @@
-version: '3'
-
 services:
-  nodejs:
-    image: registry.${SERVER_URL}/${SITE}-site
-    container_name: ${SITE}
-    restart: unless-stopped
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-      reproxy.server: "${SITE}.${SERVER_URL}"
-      reproxy.route: '^/(.*)'
-      reproxy.dest: '/@1'
-      reproxy.port: 80
-
+  reproxy:
+    image: rashpile/reproxy
+    container_name: reproxy
+    hostname: reproxy
+    restart: always
+    ports:
+      - "443:8443"    
+      - "80:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./ssl:/srv/var/ssl
+    depends_on:
+      - plugin-oauth
+    environment:
+      - DOCKER_NETWORK=reproxy
+      - MAX_SIZE=0
+      - TZ=Europe/Bucharest
+        #      - LISTEN=0.0.0.0:8080
+      - DOCKER_ENABLED=true
+      #- DOCKER_AUTO=true
+      #- ASSETS_LOCATION=/web
+      #- DEBUG=true
+      - SSL_TYPE=auto
+      - SSL_ACME_EMAIL=koptilin@gmail.com
+      - SSL_ACME_LOCATION=/srv/var/ssl
+      - SSL_ACME_FQDN=${REPROXY_URLS}
+      - TIMEOUT_CONTINUE=90s
+      - TIMEOUT_RESP_HEADER=90s
+      - TIMEOUT_READ_HEADER=90s
+      # - DROP_HEADERS=Content-Length
+      - HEADER=
+          X-Frame-Options:SAMEORIGIN,
+          X-XSS-Protection:1; mode=block;,
+          # Content-Security-Policy:default-src 'self'; style-src 'self' 'unsafe-inline';
+      - PLUGIN_ENABLED=true
+      - PLUGIN_LISTEN=0.0.0.0:8081
+  plugin-oauth:
+    image: rashpile/plugin-oauth
+    container_name: plugin-oauth
+    hostname: plugin-oauth
+    restart: always
+    volumes:
+      - ./resources/.env:/srv/.env
 networks:
   default:
-    external:
-      name: reproxy
+    external: true
+    name: reproxy

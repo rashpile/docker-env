@@ -3,8 +3,12 @@ version: '3'
 # https://hub.docker.com/r/codercom/code-server
 # https://coder.com/docs/code-server/latest/install
 
-
+# create from user:
 # mkdir -p ~/.code-server-config
+
+# copilot install manually:
+# https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+
 services:
   codeserver:
     container_name: codeserver
@@ -12,7 +16,7 @@ services:
     restart: always
     # ports:
     #   - 8080:8080
-    user: $DOCKER_USER
+    user: ${DOCKER_USER:-1000:1001}
     environment:
       - DOCKER_USER=$USER
     volumes:
@@ -20,7 +24,7 @@ services:
       - ${CODE_SERVER_PATH}:/home/coder/project
     command: --disable-telemetry ${CODE_SERVER_CMD:-}
     labels:
-      reproxy.server: "code.${SERVER_URL}"
+      reproxy.server: "vscode.${SERVER_URL}"
       reproxy.route: '^/(.*)'
       reproxy.dest: '/@1'
       reproxy.port: 8080
