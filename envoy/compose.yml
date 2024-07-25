@@ -1,0 +1,14 @@
+services:
+  envoy:
+    container_name: envoy
+    image: rashpile/envoy-auth:latest
+    ports:
+      - "127.0.0.1:10000:10000"
+      - "127.0.0.1:9901:9901"
+    volumes:
+      - ./envoy-go.yaml:/etc/envoy/envoy.yaml
+networks:
+  default:
+    external:
+      name: reproxy
+      
